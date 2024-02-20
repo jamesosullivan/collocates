@@ -6,7 +6,7 @@ This repository contains two Python scripts designed for natural language proces
 
 ### Purpose
 
-The collocation analysis script identifies pairs (bigrams) and triplets (trigrams) of words that frequently occur together in the input text more often than would be expected by chance. Collocations are significant for understanding common word combinations that carry specific meanings or connotations.
+The collocation analysis script identifies pairs (bigrams) and triplets (trigrams) of words that frequently occur together in the input text more often than would be expected by chance. Bigrams are only counted if they appear more than once. Collocations are significant for understanding common word combinations that carry specific meanings or connotations.
 
 ### Requirements
 
@@ -23,7 +23,7 @@ nltk.download('stopwords')
 
 ### Usage
 
-1. Save your input text in a file named `BarackObama1.txt`.
+1. Change the filename of input text from `filename.txt` to whatever your file is called.
 2. Run the script. It reads the input file, performs collocation analysis, and outputs the top 10 bigrams and trigrams.
 3. Results are saved in `collocation-results.txt`, with bigrams and trigrams listed separately.
 
@@ -42,7 +42,7 @@ Ensure the NLTK library is installed and the necessary data has been downloaded 
 
 ### Usage
 
-1. The script expects the text to be analysed in a file named `BarackObama1.txt`.
+1. Change the filename of input text from `filename.txt` to whatever your file is called.
 2. It calculates the co-occurrence of all word pairs, excluding stopwords, within a window size of 2 (this can be adjusted in the script).
 3. The top 10 most common co-occurrences are output to `top-co-occurrence-results.txt`.
 
