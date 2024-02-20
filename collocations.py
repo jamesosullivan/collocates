@@ -9,47 +9,45 @@ nltk.download('punkt')
 nltk.download('stopwords')
 
 def perform_collocation_analysis(file_path):
+    """Perform collocation analysis on a given text file to find top bigrams and trigrams, excluding those that occur only once."""
     # Open and read the file
     with open(file_path, 'r', encoding='utf-8') as file:
         text = file.read()
-    
-    # Tokenize the text
+
+    # Tokenize the text, remove non-alphabetic tokens, and convert to lowercase
     tokens = word_tokenize(text)
-    
-    # Convert to lower case and filter out non-alphabetic tokens
     words = [word.lower() for word in tokens if word.isalpha()]
-    
+
     # Remove stopwords
     stop_words = set(stopwords.words('english'))
-    words = [word for word in words if word not in stop_words]
-    
-    # Setup Bigram Finder
+    filtered_words = [word for word in words if word not in stop_words]
+
+    # Initialize Bigram and Trigram Finders
     bigram_measures = BigramAssocMeasures()
-    bigram_finder = BigramCollocationFinder.from_words(words)
-    
-    # Setup Trigram Finder
     trigram_measures = TrigramAssocMeasures()
-    trigram_finder = TrigramCollocationFinder.from_words(words)
-    
-    # Find the top 10 bigrams and trigrams using the PMI measure
+    bigram_finder = BigramCollocationFinder.from_words(filtered_words)
+    trigram_finder = TrigramCollocationFinder.from_words(filtered_words)
+
+    # Apply frequency filter to exclude n-grams that occur only once
+    bigram_finder.apply_freq_filter(2)
+    trigram_finder.apply_freq_filter(2)
+
+    # Find the top 10 bigrams and trigrams using PMI
     top_bigrams = bigram_finder.nbest(bigram_measures.pmi, 10)
     top_trigrams = trigram_finder.nbest(trigram_measures.pmi, 10)
-    
+
     return top_bigrams, top_trigrams
 
-# Path to your input file
-file_path = "text-file-here.txt"
-
-# Perform the analysis
+file_path = "filename.txt"
 top_bigrams, top_trigrams = perform_collocation_analysis(file_path)
 
-# Output the results to a text file, clearly separating bigrams and trigrams
+# Writing results to file, separating bigrams and trigrams
 with open("collocation-results.txt", "w", encoding='utf-8') as output_file:
-    output_file.write("Top 10 Bigram Collocations:\n")
+    output_file.write("Top Bigram Collocations (excluding those occurring only once):\n")
     for bigram in top_bigrams:
         output_file.write(f"{bigram[0]} {bigram[1]}\n")
-    output_file.write("\nTop 10 Trigram Collocations:\n")
+    output_file.write("\nTop Trigram Collocations (excluding those occurring only once):\n")
     for trigram in top_trigrams:
         output_file.write(f"{trigram[0]} {trigram[1]} {trigram[2]}\n")
 
-print("Collocation analysis is complete. Results are clearly separated in 'collocation-results.txt'.")
+print("Collocation analysis is complete. Results are saved in 'collocation-results.txt'.")

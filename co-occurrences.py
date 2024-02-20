@@ -31,7 +31,7 @@ def co_occurrence(text, window_size=2):
     return co_occurrence_counts.most_common(10)
 
 # Read the text file
-with open("text-file-here.txt", "r", encoding='utf-8') as file:
+with open("filename.txt", "r", encoding='utf-8') as file:
     text = file.read()
 
 # Calculate the top 10 co-occurrences
